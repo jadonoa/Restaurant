@@ -1,10 +1,9 @@
 class Table:
 
-    bill = list()
-
 
     def __init__(self, num_of_people: int):
         self.num_of_people = num_of_people
+        self.bill = list()
 
 
     def order(self, item: str, price: float, quantity: int = 1):
@@ -53,7 +52,7 @@ class Table:
     def get_subtotal(self) -> float:
         subtotal = 0
 
-        # calculate subtotal by multiplying the items price and quantity
+        # calculate subtotal by multiplying the items price and quantity for each item in the bill
         for item in self.bill:
             subtotal += (item["price"] * item["quantity"])
 
@@ -61,16 +60,17 @@ class Table:
 
 
     def get_total(self, service_charge_percentage: float = 0.1) -> dict:
+        # calculate sub Total, service charge and total and return as a string
         subtotal = self.get_subtotal()
         service_charge = service_charge_percentage * subtotal
         total = subtotal + service_charge
 
-        return {"Sub Total": "£" + str(round(subtotal, 2)), "Service Charge": "£" + str(round(service_charge, 2)), "Total": "£" + str(round(total, 2))}
+        return {"Sub Total": "£" + "{:.2f}".format(subtotal), "Service Charge": "£" + "{:.2f}".format(service_charge), "Total": "£" + "{:.2f}".format(total)}
 
 
     def split_bill(self) -> float:
         subtotal = self.get_subtotal()
-        return round(float(subtotal / self.num_of_people), 2)
+        return round(subtotal / self.num_of_people, 2)
 
     def clear_bill(self):
         self.bill = list()
